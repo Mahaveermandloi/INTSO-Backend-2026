@@ -15,6 +15,8 @@ const startServer = async () => {
     await db.sequelize.sync();
     await connectDB();
 
+
+    
     app.listen(PORT, () => {
       console.log(`
 =========================================

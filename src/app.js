@@ -49,23 +49,16 @@ app.get("/", (req, res) => {
 
 
 
-const allowedOrigins = [
-  "http://localhost:5173",
-  "https://intso-frontend-2026-s2xi.vercel.app",
-];
+
+
 
 app.use(
   cors({
-    origin: function (origin, callback) {
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
+    origin: true, // reflects request origin
     credentials: true,
-  }),
+  })
 );
+
 
 /* =====================================================
                 ⭐ MIDDLEWARE
@@ -92,6 +85,7 @@ app.get("/", (req, res) => {
       <p>Environment: ${process.env.NODE_ENV || "development"}</p>
     `);
 });
+
 
 /* =====================================================
                 ⭐ HEALTH CHECK
