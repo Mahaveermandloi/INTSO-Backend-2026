@@ -1,0 +1,528 @@
+import { Router } from "express";
+import {
+  loginAdmin,
+  logoutAdmin,
+  showProfile,
+  updateProfile,
+  updatePassword,
+  registerUser,
+} from "../controller/admin.controller.js";
+
+import { verifyJWT } from "../middleware/auth.middleware.js";
+import { profileUpload } from "../middleware/multer.middleware.js";
+
+const router = Router();
+
+router.post("/login", loginAdmin);
+router.post("/logout", verifyJWT, logoutAdmin);
+router.put(
+  "/update-profile",
+  verifyJWT,
+  profileUpload.single("image"),
+  updateProfile
+);
+router.get("/profile", verifyJWT, showProfile);
+router.put("/update-password", verifyJWT, updatePassword);
+router.post("/signup", registerUser);
+
+export default router;
+
+
+
+
+
+import { Router } from "express";
+import {
+  deleteBannerImage,
+  uploadBannerImage,
+  getBannerData,
+} from "../controller/banner.controller.js";
+import {
+  bannerUpload,
+  imageCompressionMiddleware,
+} from "../middleware/multer.middleware.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+import verifyAPIKey from "../middleware/verifyAPIKey.js";
+
+const router = Router();
+
+router
+  .route("/upload-banner-image")
+  .post(
+    verifyJWT,
+    bannerUpload.single("image"),
+    uploadBannerImage
+  );
+
+router.route("/delete-banner-image/:id").delete(verifyJWT, deleteBannerImage);
+
+router.get("/getBannerData", verifyAPIKey,  getBannerData);
+
+export default router;
+
+
+
+
+
+import { Router } from "express";
+import {
+  PostBlogData,
+  deleteBlogs,
+  getAllBlogDetails,
+  getBlogDetails,
+  editBlogDetails,
+  updateBlogDetails,
+} from "../controller/blog.controller.js";
+
+import {
+  blogUpload,
+  imageCompressionMiddleware,
+} from "../middleware/multer.middleware.js";
+import { getHomeScreenData } from "../controller/home.controller.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+import verifyAPIKey from "../middleware/verifyAPIKey.js";
+
+const router = Router();
+router.post(
+  "/post-blogs",
+  verifyJWT,
+
+  blogUpload.single("image"),
+  imageCompressionMiddleware,
+  PostBlogData
+);
+
+// router.get("/get-all-blogs", getHomeScreenData);
+router.get("/get-blog-details/:permalink", verifyAPIKey, getBlogDetails);
+
+router.get("/get-all-blog-details", verifyAPIKey, getAllBlogDetails);
+
+router.get("/get-edit-blog-details/:id", verifyJWT, editBlogDetails);
+
+router.put(
+  "/update-blog-details/:id",
+  blogUpload.single("image"),
+  verifyJWT,
+  imageCompressionMiddleware,
+  updateBlogDetails
+);
+
+router.delete("/delete-blogs/:id", verifyJWT, deleteBlogs);
+
+export default router;
+
+
+
+
+
+import { Router } from "express";
+// import { postcontactUs } from "../controller/contactUs.controllers.js";
+import {
+  getContactUsDetails,
+  postcontactUs,
+} from "../controller/contactUs.controller.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+
+const router = Router();
+
+router.post("/postContact", postcontactUs);
+router.get("/getContactDetails", verifyJWT, getContactUsDetails);
+
+
+export default router;
+
+
+
+
+
+import { Router } from "express";
+import { getStats } from "../controller/dashboard.controller.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+
+const router = Router();
+
+router.get("/dashboardStats",verifyJWT , getStats);
+
+export default router;
+
+
+
+
+// routes/studentList.js
+import express from "express";
+import { saveStudentByExcel } from "../controller/addStudentByExcel.controller.js";
+import multer from "multer";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+
+const router = express.Router();
+const upload = multer({ dest: "uploads/" });
+
+router.post(
+  "/uploadstudentlist",
+  verifyJWT,
+  upload.single("file"),
+  saveStudentByExcel
+);
+
+export default router;
+
+
+// import { verifyJWT } from "../middlewares/auth.middleware";
+import { Router } from "express";
+
+import {
+  checkUser,
+  verifyOtp,
+  verifyToken,
+  updateNewPassword,
+} from "../controller/forgetpassword.controller.js";
+
+
+const router = Router();
+
+
+router.route("/update-new-password").put(updateNewPassword);
+
+router.route("/check-user").post(checkUser);
+
+router.route("/verify-otp").post(verifyOtp);
+
+router.route("/verify-token").post(verifyToken);
+ 
+export default router
+
+
+
+import { Router } from "express";
+import {
+  PostGallery,
+  getGallaryData,
+  deleteGalleryImage,
+} from "../controller/gallary.controller.js";
+
+import {
+  imageCompressionMiddleware,
+  upload,
+} from "../middleware/multer.middleware.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+
+import verifyAPIKey from "../middleware/verifyAPIKey.js"
+
+const router = Router();
+router.post(
+  "/postGallery",
+  verifyJWT,
+  upload.single("gallery_img"),
+  imageCompressionMiddleware,
+  PostGallery
+);
+router.delete("/deleteGalleryImage/:id", verifyJWT, deleteGalleryImage);
+
+router.get("/getGallery", verifyAPIKey, getGallaryData);
+
+export default router;
+
+
+
+
+import { Router } from "express";
+
+import { getHomeScreenData } from "../controller/home.controller.js";
+
+const router = Router();
+
+import { upload } from "../middleware/multer.middleware.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+import verifyAPIKey from "../middleware/verifyAPIKey.js";
+
+// router.post("/postCrousel", uploadFields, postCrouselData);
+
+// router.post("/postTestimonial", upload.single("image"), PostTestimonialData);
+
+router.get("/homeData",verifyAPIKey, getHomeScreenData);
+
+export default router;
+
+
+
+import { Router } from "express";
+import {
+  createNewsUpdate,
+  getAllArrays,
+  deleteNewsUpdate,
+  updateNews,
+  getNews,
+} from "../controller/newsAndUpdate.controller.js";
+import {
+  imageCompressionMiddleware,
+  newsAndUpdateUpload,
+} from "../middleware/multer.middleware.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+import verifyAPIKey from "../middleware/verifyAPIKey.js";
+
+const router = Router();
+router.post(
+  "/upload-news-and-updates",
+  newsAndUpdateUpload.single("image"),
+  createNewsUpdate
+);
+
+router
+  .route("/update-news-and-updates/:id")
+  .put(
+    verifyJWT,
+    newsAndUpdateUpload.single("image"),
+    imageCompressionMiddleware,
+    updateNews
+  );
+
+
+router.get("/get-news-and-updates",verifyAPIKey ,  getAllArrays);
+
+router
+  .route("/delete-news-and-updates/:id")
+  .delete(verifyJWT, deleteNewsUpdate);
+
+export default router;
+
+
+
+import { Router } from "express";
+import {
+  postNewsLetter,
+  getNewsLetter,
+  downloadNewsLetter,
+} from "../controller/newsLetter.controller.js";
+
+import { verifyJWT } from "../middleware/auth.middleware.js";
+
+const router = Router();
+router.post("/postnewsletter", postNewsLetter);
+
+router.get("/getAllNewsletter", verifyJWT, getNewsLetter);
+
+router.get("/downloadExcel", verifyJWT, downloadNewsLetter);
+
+export default router;
+
+
+
+
+import { Router } from "express";
+import {
+  createResource,
+  deleteResource,
+  getFreeResources,
+  getPaidResources,
+  getAllResourcesByAdmin,
+  getAllDataByAdmin,
+  getAllImages,
+  getAllPdfs,
+  getAllVideos,
+  getPaidResourcesByUser,
+} from "../controller/resources.controller.js";
+
+import {
+  imageCompressionMiddleware,
+  upload,
+} from "../middleware/multer.middleware.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+import { verifyUserJwt } from "../middleware/userAuth.middleware.js";
+import verifyAPIKey from "../middleware/verifyAPIKey.js";
+const router = Router();
+
+router.post(
+  "/create-resource",
+  verifyJWT,
+
+  upload.fields([
+    { name: "resource_url" },
+    { name: "thumbnail" },
+    { name: "image" },
+    { name: "pdf" },
+  ]),
+  imageCompressionMiddleware,
+  createResource
+);
+
+
+router.get("/get-all-data-by-admin", getAllDataByAdmin);
+
+
+
+
+
+router.get("/getResources", verifyAPIKey , verifyUserJwt, getPaidResources);
+router.get("/get-all-resources-by-admin",  verifyAPIKey , getAllResourcesByAdmin);
+
+router.get("/get-all-resources", verifyAPIKey, getFreeResources);
+
+router.get("/get-paid-data-by-user",verifyAPIKey, getPaidResourcesByUser);
+
+router.get("/getallimages", verifyAPIKey, getAllImages);
+router.get("/getallpdfs", verifyAPIKey, getAllPdfs);
+router.get("/getallvideos", verifyAPIKey, getAllVideos);
+
+router.delete("/delete-resource/:id", verifyJWT, deleteResource);
+
+export default router;
+
+
+
+
+import { Router } from "express";
+
+import {
+  schoolRegistration,
+  getSchoolsData,
+  uploadSchool,
+} from "../controller/school.controller.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+
+import {
+  getApprovedSchoolNames,
+  getApprovedSchoolDetails,
+} from "../controller/school.controller.js";
+
+import {
+  rejectSchool,
+  approveSchool,
+  deleteSchoolRequest,
+  addToSchoolList,
+} from "../controller/changeSchoolStatus.controller.js";
+
+const router = Router();
+
+router.post("/registerSchool", schoolRegistration);
+
+router.put("/approveSchool/:school_id", verifyJWT, approveSchool);
+
+// kal hi likha ye
+router.delete(
+  "/deleteSchoolRequest/:school_id",
+  verifyJWT,
+  deleteSchoolRequest
+);
+
+router.post("/addToSchoolList/:id", verifyJWT, addToSchoolList);
+
+router.put("/rejectSchool/:school_id", verifyJWT, rejectSchool);
+
+router.get("/getSchoolData", verifyJWT, getSchoolsData);
+
+// router.post("/registerSchool", verifyJWT, schoolRegistration);
+
+router.post("/uploadSchool", verifyJWT, uploadSchool);
+
+router.get("/get-approved-schools", verifyJWT, getApprovedSchoolNames);
+
+router.get("/getAll-approved-shools", verifyJWT, getApprovedSchoolDetails);
+
+export default router;
+
+
+
+import { Router } from "express";
+
+import {
+  matchAndSaveStudent,
+  getStudentsBySchoolAndClass,
+  getAllStudents,
+  downloadFormat,
+} from "../controller/studentList.controller.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+const router = Router();
+
+router.post("/createStudentList/:id", verifyJWT, matchAndSaveStudent);
+router.get("/getBySchoooNameAndClass", verifyJWT, getStudentsBySchoolAndClass);
+
+router.get("/getAllStudents", verifyJWT, getAllStudents);
+
+router.get("/downloadFormat", verifyJWT, downloadFormat);
+
+export default router;
+
+
+
+import { Router } from "express";
+import {
+  createStudentRequest,
+  findAllStudentRequests,
+  findStudentRequestById,
+  updateStudentRequest,
+  deleteStudentRequest,
+} from "../controller/studentRequest.controller.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+
+const router = Router();
+router.post("/createStudent",  createStudentRequest);
+
+router.get("/getAllStudentData", verifyJWT, findAllStudentRequests);
+router.get("/getStudentData", verifyJWT, findStudentRequestById);
+
+router.delete("/deleteStudentRequest/:id", verifyJWT, deleteStudentRequest);
+
+export default router;
+
+
+import { Router } from "express";
+import {
+  PostTestimonialData,
+  getTestimonial,
+  deleteTestimonial,
+} from "../controller/testimonial.controller.js";
+import {
+  imageCompressionMiddleware,
+  testimonialUpload,
+} from "../middleware/multer.middleware.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
+import verifyAPIKey from "../middleware/verifyAPIKey.js";
+const router = Router();
+
+router.post(
+  "/post-testimonial",
+  verifyJWT,
+  testimonialUpload.single("image"),
+  imageCompressionMiddleware,
+  PostTestimonialData
+);
+
+router.get("/get-testimonial", verifyAPIKey, getTestimonial);
+
+router.delete("/delete-testimonial/:id", verifyJWT, deleteTestimonial);
+
+export default router;
+
+
+
+
+import express from "express";
+import {
+  loginController,
+  logoutController,
+  checkUserAndSendEmail,
+  verifyOtp,
+  resendOtp,
+  updateNewPassword,
+} from "../controller/userLogin.controller.js";
+import { verifyUserJwt } from "../middleware/userAuth.middleware.js";
+
+const router = express.Router();
+
+router.post("/login", loginController);
+router.post("/logout", verifyUserJwt, logoutController);
+
+router.post("/forgetpassword", checkUserAndSendEmail);
+
+router.post("/verifyuser", verifyOtp);
+
+router.post("/resend", resendOtp);
+router.post("/updatenewpassword", updateNewPassword);
+
+
+ 
+export default router;
+
+
+
+

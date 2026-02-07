@@ -4,14 +4,14 @@ import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Routes
+// ROUTES
 import schoolRouter from "./routes/school.routes.js";
 import homeRouter from "./routes/home.routes.js";
-import ResorceRouter from "./routes/resource.routes.js";
-import ContactUsRouter from "./routes/contactUs.routes.js";
-import BlogsRouter from "./routes/blog.routes.js";
-import GallaryRouter from "./routes/gallary.routes.js";
-import BannerRouter from "./routes/banner.routes.js";
+import resourceRouter from "./routes/resource.routes.js";
+import contactUsRouter from "./routes/contactUs.routes.js";
+import blogsRouter from "./routes/blog.routes.js";
+import galleryRouter from "./routes/gallary.routes.js";
+import bannerRouter from "./routes/banner.routes.js";
 import studentRequestRouter from "./routes/studentRequest.routes.js";
 import studentListRouter from "./routes/studentList.routes.js";
 import testimonialRouter from "./routes/testimonial.routes.js";
@@ -26,69 +26,55 @@ import dashboardRouter from "./routes/dashboard.routes.js";
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 8000;
 
-// Fix __dirname for ES modules
+/* =====================================================
+                PATH FIX (ES MODULE)
+===================================================== */
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 /* =====================================================
-                ⭐ CORS (VERY IMPORTANT)
+                GLOBAL MIDDLEWARE
 ===================================================== */
 
-const allowedOrigins = [
-  "https://intso-frontend-2026-s2xi.vercel.app",
-  "http://localhost:5173",
-];
-
+// ✅ CORS (Production Friendly)
 app.use(
   cors({
-    origin: function (origin, callback) {
-
-      // allow requests like Postman / curl
-      if (!origin) return callback(null, true);
-
-      if (allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
-
-      return callback(new Error("CORS blocked"));
-    },
-    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: process.env.CORS_ORIGIN || "*",
+    methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
 );
 
-// ⭐ Fixes MOST preflight issues
-app.options("*", cors());
-
-/* =====================================================
-                ⭐ MIDDLEWARE
-===================================================== */
-
+// Body Parsers
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
 /* =====================================================
-                ⭐ STATIC FILES
+                STATIC FILES
 ===================================================== */
 
-app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use(express.static(path.join(__dirname, "public")));
 
 /* =====================================================
-                ⭐ ROOT + HEALTH
+                HEALTH + ROOT
 ===================================================== */
 
+// ⭐ ROOT URL
 app.get("/", (req, res) => {
   res.status(200).send(`
-    <h2>🚀 INTSO Backend Server is Running!</h2>
-    <p>Status: ✅ Healthy</p>
-    <p>Environment: ${process.env.NODE_ENV || "development"}</p>
+    <div style="font-family:sans-serif;text-align:center;margin-top:40px;">
+      <h1>🚀 INTSO Backend is Running Successfully</h1>
+      <p>Status: ✅ Healthy</p>
+      <p>Environment: ${process.env.NODE_ENV || "development"}</p>
+      <p>Time: ${new Date().toLocaleString()}</p>
+    </div>
   `);
 });
 
+// ⭐ HEALTH CHECK (Used by AWS, Render, Docker etc.)
 app.get("/health", (req, res) => {
   res.status(200).json({
     status: "OK",
@@ -98,16 +84,17 @@ app.get("/health", (req, res) => {
 });
 
 /* =====================================================
-                    ⭐ ROUTES
+                    API ROUTES
 ===================================================== */
 
+// ✅ Versioned Routes (BEST PRACTICE)
 app.use("/api/v1/school", schoolRouter);
 app.use("/api/v1/home", homeRouter);
-app.use("/api/v1/banner", BannerRouter);
-app.use("/api/v1/resource", ResorceRouter);
-app.use("/api/v1/contact", ContactUsRouter);
-app.use("/api/v1/blogs", BlogsRouter);
-app.use("/api/v1/gallery", GallaryRouter);
+app.use("/api/v1/banner", bannerRouter);
+app.use("/api/v1/resource", resourceRouter);
+app.use("/api/v1/contact", contactUsRouter);
+app.use("/api/v1/blogs", blogsRouter);
+app.use("/api/v1/gallery", galleryRouter);
 app.use("/api/v1/student", studentRequestRouter);
 app.use("/api/v1/newsandupdates", newsAndUpdateRouter);
 app.use("/api/v1/studentList", studentListRouter);
@@ -117,23 +104,23 @@ app.use("/api/v1/newsLetter", newsLetterRouter);
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/dashboard", dashboardRouter);
 
-// Admin routes
+// ⭐ ADMIN (Move under v1 — much cleaner)
 app.use("/", adminRouter);
 app.use("/", forgetPasswordRouter);
 
 /* =====================================================
-                ⭐ 404 HANDLER
+                404 HANDLER
 ===================================================== */
 
 app.use((req, res) => {
   res.status(404).json({
     success: false,
-    message: "Route not found",
+    message: `Route Not Found: ${req.originalUrl}`,
   });
 });
 
 /* =====================================================
-            ⭐ GLOBAL ERROR HANDLER
+            GLOBAL ERROR HANDLER
 ===================================================== */
 
 app.use((err, req, res, next) => {
@@ -145,10 +132,4 @@ app.use((err, req, res, next) => {
   });
 });
 
-/* =====================================================
-                ⭐ START SERVER
-===================================================== */
-
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-});
+export default app;

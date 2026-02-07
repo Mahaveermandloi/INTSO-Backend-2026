@@ -1,37 +1,40 @@
+import dotenv from "dotenv";
+dotenv.config();
+
+import app from "./app.js";
 import { db } from "./db/db.config.js";
 import { connectDB } from "./db/admindb.js";
 
-import express from "express";
-
-const app = express();
 const PORT = process.env.PORT || 8000;
 
 /* =====================================================
-                ⭐ START SERVER
+                START SERVER
 ===================================================== */
 
 const startServer = async () => {
   try {
+    // ✅ Connect Databases
     await db.sequelize.sync();
     await connectDB();
 
+    console.log("✅ Database connected successfully.");
 
-    
     app.listen(PORT, () => {
       console.log(`
 =========================================
-🚀 INTSO ADMIN BACKEND STARTED
+🚀 INTSO BACKEND STARTED
 =========================================
 ✅ Server running on port: ${PORT}
 🌍 Environment: ${process.env.NODE_ENV || "development"}
-🕒 Started at: ${new Date().toLocaleString()}
-🔗 Health Check: http://localhost:${PORT}/health
+🔗 URL: http://localhost:${PORT}
+❤️ Health: http://localhost:${PORT}/health
 =========================================
       `);
     });
+
   } catch (error) {
     console.error("❌ Failed to start server:", error);
-    process.exit(1); // stop app if DB fails
+    process.exit(1);
   }
 };
 

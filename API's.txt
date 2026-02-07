@@ -1,0 +1,109 @@
+Here are ALL your APIs written with FULL URLs exactly in the format you requested.
+
+🔐 ADMIN APIs
+POST : http://localhost:8000/login
+POST : http://localhost:8000/signup
+POST : http://localhost:8000/logout
+GET : http://localhost:8000/profile
+PUT : http://localhost:8000/update-profile
+PUT : http://localhost:8000/update-password
+
+🔑 FORGET PASSWORD (ADMIN)
+POST : http://localhost:8000/check-user
+POST : http://localhost:8000/verify-otp
+POST : http://localhost:8000/verify-token
+PUT : http://localhost:8000/update-new-password
+
+🏫 SCHOOL APIs
+POST : http://localhost:8000/api/v1/school/registerSchool
+PUT : http://localhost:8000/api/v1/school/approveSchool/:school_id
+DELETE : http://localhost:8000/api/v1/school/deleteSchoolRequest/:school_id
+POST : http://localhost:8000/api/v1/school/addToSchoolList/:id
+PUT : http://localhost:8000/api/v1/school/rejectSchool/:school_id
+GET : http://localhost:8000/api/v1/school/getSchoolData
+POST : http://localhost:8000/api/v1/school/uploadSchool
+GET : http://localhost:8000/api/v1/school/get-approved-schools
+GET : http://localhost:8000/api/v1/school/getAll-approved-shools
+
+🏠 HOME
+GET : http://localhost:8000/api/v1/home/homeData
+
+🖼️ BANNER
+POST : http://localhost:8000/api/v1/banner/upload-banner-image
+DELETE : http://localhost:8000/api/v1/banner/delete-banner-image/:id
+GET : http://localhost:8000/api/v1/banner/getBannerData
+
+📦 RESOURCES
+POST : http://localhost:8000/api/v1/resource/create-resource
+GET : http://localhost:8000/api/v1/resource/get-all-data-by-admin
+GET : http://localhost:8000/api/v1/resource/getResources
+GET : http://localhost:8000/api/v1/resource/get-all-resources-by-admin
+GET : http://localhost:8000/api/v1/resource/get-all-resources
+GET : http://localhost:8000/api/v1/resource/get-paid-data-by-user
+GET : http://localhost:8000/api/v1/resource/getallimages
+GET : http://localhost:8000/api/v1/resource/getallpdfs
+GET : http://localhost:8000/api/v1/resource/getallvideos
+DELETE : http://localhost:8000/api/v1/resource/delete-resource/:id
+
+📞 CONTACT
+POST : http://localhost:8000/api/v1/contact/postContact
+GET : http://localhost:8000/api/v1/contact/getContactDetails
+
+📝 BLOGS
+POST : http://localhost:8000/api/v1/blogs/post-blogs
+GET : http://localhost:8000/api/v1/blogs/get-blog-details/:permalink
+GET : http://localhost:8000/api/v1/blogs/get-all-blog-details
+GET : http://localhost:8000/api/v1/blogs/get-edit-blog-details/:id
+PUT : http://localhost:8000/api/v1/blogs/update-blog-details/:id
+DELETE : http://localhost:8000/api/v1/blogs/delete-blogs/:id
+
+🖼️ GALLERY
+POST : http://localhost:8000/api/v1/gallery/postGallery
+DELETE : http://localhost:8000/api/v1/gallery/deleteGalleryImage/:id
+GET : http://localhost:8000/api/v1/gallery/getGallery
+
+🎓 STUDENT REQUEST
+POST : http://localhost:8000/api/v1/student/createStudent
+GET : http://localhost:8000/api/v1/student/getAllStudentData
+GET : http://localhost:8000/api/v1/student/getStudentData
+DELETE : http://localhost:8000/api/v1/student/deleteStudentRequest/:id
+
+📚 STUDENT LIST
+POST : http://localhost:8000/api/v1/studentList/uploadstudentlist
+POST : http://localhost:8000/api/v1/studentList/createStudentList/:id
+GET : http://localhost:8000/api/v1/studentList/getBySchoooNameAndClass
+GET : http://localhost:8000/api/v1/studentList/getAllStudents
+GET : http://localhost:8000/api/v1/studentList/downloadFormat
+
+⭐ TESTIMONIAL
+POST : http://localhost:8000/api/v1/testimonial/post-testimonial
+GET : http://localhost:8000/api/v1/testimonial/get-testimonial
+DELETE : http://localhost:8000/api/v1/testimonial/delete-testimonial/:id
+
+📰 NEWS & UPDATES
+POST : http://localhost:8000/api/v1/newsandupdates/upload-news-and-updates
+PUT : http://localhost:8000/api/v1/newsandupdates/update-news-and-updates/:id
+GET : http://localhost:8000/api/v1/newsandupdates/get-news-and-updates
+DELETE : http://localhost:8000/api/v1/newsandupdates/delete-news-and-updates/:id
+
+📧 NEWSLETTER
+POST : http://localhost:8000/api/v1/newsLetter/postnewsletter
+GET : http://localhost:8000/api/v1/newsLetter/getAllNewsletter
+GET : http://localhost:8000/api/v1/newsLetter/downloadExcel
+
+👤 USER AUTH
+POST : http://localhost:8000/api/v1/user/login
+POST : http://localhost:8000/api/v1/user/logout
+POST : http://localhost:8000/api/v1/user/forgetpassword
+POST : http://localhost:8000/api/v1/user/verifyuser
+POST : http://localhost:8000/api/v1/user/resend
+POST : http://localhost:8000/api/v1/user/updatenewpassword
+
+📊 DASHBOARD
+GET : http://localhost:8000/api/v1/dashboard/dashboardStats
+
+❤️ HEALTH
+GET : http://localhost:8000/health
+
+
+If you want, I can next generate you a 🔥 single copy-paste Postman collection file so you don’t have to manually create these — most developers prefer that because it saves 30–45 minutes.
