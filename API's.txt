@@ -54,6 +54,8 @@ POST : http://localhost:8000/api/v1/blogs/post-blogs
 GET : http://localhost:8000/api/v1/blogs/get-blog-details/:permalink
 GET : http://localhost:8000/api/v1/blogs/get-all-blog-details
 GET : http://localhost:8000/api/v1/blogs/get-edit-blog-details/:id
+
+
 PUT : http://localhost:8000/api/v1/blogs/update-blog-details/:id
 DELETE : http://localhost:8000/api/v1/blogs/delete-blogs/:id
 
