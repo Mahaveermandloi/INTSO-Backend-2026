@@ -28,37 +28,40 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-// Fix __dirname
+// Fix __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 /* =====================================================
-                    ⭐ CORS
+                ⭐ CORS (VERY IMPORTANT)
 ===================================================== */
 
-
-
+const allowedOrigins = [
+  "https://intso-frontend-2026-s2xi.vercel.app",
+  "http://localhost:5173",
+];
 
 app.use(
   cors({
-    origin: true, // reflects request origin
+    origin: function (origin, callback) {
+
+      // allow requests like Postman / curl
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error("CORS blocked"));
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
   })
 );
 
-
-app.get("/", (req, res) => {
-  res.status(200).send(`
-    <h2>🚀 INTSO Backend Server is Running!</h2>
-    <p>Status: ✅ Healthy</p>
-  `);
-});
-
-
-
-
-
-
+// ⭐ Fixes MOST preflight issues
+app.options("*", cors());
 
 /* =====================================================
                 ⭐ MIDDLEWARE
@@ -75,21 +78,16 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 /* =====================================================
-                ⭐ ROOT ROUTE
+                ⭐ ROOT + HEALTH
 ===================================================== */
 
 app.get("/", (req, res) => {
   res.status(200).send(`
-      <h2>🚀 INTSO Admin Backend is Running!</h2>
-      <p>Status: ✅ Healthy</p>
-      <p>Environment: ${process.env.NODE_ENV || "development"}</p>
-    `);
+    <h2>🚀 INTSO Backend Server is Running!</h2>
+    <p>Status: ✅ Healthy</p>
+    <p>Environment: ${process.env.NODE_ENV || "development"}</p>
+  `);
 });
-
-
-/* =====================================================
-                ⭐ HEALTH CHECK
-===================================================== */
 
 app.get("/health", (req, res) => {
   res.status(200).json({
@@ -150,3 +148,7 @@ app.use((err, req, res, next) => {
 /* =====================================================
                 ⭐ START SERVER
 ===================================================== */
+
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
+});
