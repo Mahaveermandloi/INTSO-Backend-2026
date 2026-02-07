@@ -39,6 +39,13 @@ const __dirname = path.dirname(__filename);
 
 
 
+app.use(
+  cors({
+    origin: true, // reflects request origin
+    credentials: true,
+  })
+);
+
 
 app.get("/", (req, res) => {
   res.status(200).send(`
@@ -51,13 +58,6 @@ app.get("/", (req, res) => {
 
 
 
-
-app.use(
-  cors({
-    origin: true, // reflects request origin
-    credentials: true,
-  })
-);
 
 
 /* =====================================================
