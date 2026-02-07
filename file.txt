@@ -1,0 +1,19 @@
+Backend Folder Structure:
+        
+        node modules
+        src:
+            -controller --- LOGIC 
+            -dbconfig   --- DATABASE CONFIGURATION/CONNECTIVITY
+            -middleware --- BRIDGE B/W routes and controller  ["/login" , middleware1 , middleware2  , loginController]
+            -models  ---    SCHEMA OF THE DATABASE AND TABLES 
+            -routes  --- ALL USER AND ADMIN ROUTES
+            -uploads ---  FOLDER FOR UPLOADING AND STORING IMAGES, PDF , XLSX , & DIFFERENT FILES
+            -utils  --- ApiError and ApiResponse files 
+            -app.js
+            -index.js
+        .env --- PROTECTED CREDENTIALS
+        package.json  --- DEPENDENCIES 
+        package-lock.json
+
+
+

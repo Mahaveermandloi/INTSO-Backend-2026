@@ -1,0 +1,17 @@
+import { Router } from "express";
+import {
+  postNewsLetter,
+  getNewsLetter,
+  downloadNewsLetter,
+} from "../controller/newsLetter.controller.js";
+
+import { verifyJWT } from "../middleware/auth.middleware.js";
+
+const router = Router();
+router.post("/postnewsletter", postNewsLetter);
+
+router.get("/getAllNewsletter", verifyJWT, getNewsLetter);
+
+router.get("/downloadExcel", verifyJWT, downloadNewsLetter);
+
+export default router;
