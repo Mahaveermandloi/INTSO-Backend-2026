@@ -3,6 +3,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+import { createUploadFolders } from "./utils/createUploadFolders.js";
 
 // ROUTES
 import schoolRouter from "./routes/school.routes.js";
@@ -54,6 +55,11 @@ app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 /* =====================================================
                 STATIC FILES
 ===================================================== */
+
+
+createUploadFolders(__dirname);
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use(express.static(path.join(__dirname, "public")));
