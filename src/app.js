@@ -36,6 +36,19 @@ const __dirname = path.dirname(__filename);
                     ⭐ CORS
 ===================================================== */
 
+
+
+
+
+app.get("/", (req, res) => {
+  res.status(200).send(`
+    <h2>🚀 INTSO Backend Server is Running!</h2>
+    <p>Status: ✅ Healthy</p>
+  `);
+});
+
+
+
 const allowedOrigins = [
   "http://localhost:5173",
   "https://intso-frontend-2026-s2xi.vercel.app",
